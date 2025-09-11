@@ -20,7 +20,7 @@ void clk_enable(void)
 void imx6u_clkinit(void)
 {
 	unsigned int reg =0;
-	if((((CMM->CCSR)>>2)&0x1)==0)
+	if((((CCM->CCSR)>>2)&0x1)==0)
 	{
 		CCM->CCSR &= ~(1<<8);
 		CCM->CCSR |=(1<<2);
@@ -42,5 +42,5 @@ void imx6u_clkinit(void)
 	CCM->CBCDR |=1<<8;
 	CCM->CSCMR1 &=~(1<<6);
 	CCM->CSCMR1 &=~(7<<0);
-	
+
 }
