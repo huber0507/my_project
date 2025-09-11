@@ -30,6 +30,19 @@ if git diff --quiet && git diff --cached --quiet; then
     exit 0
 fi
 
+# 新增：自动添加所有未跟踪文件（排除.gitignore中定义的文件）
+echo "===== 自动添加未跟踪文件到暂存区 ======"
+# git add . 会添加所有未跟踪文件（但会遵守.gitignore规则，忽略不需要的文件）
+git add .
+# 检查是否有未跟踪文件被添加成功
+added_files=$(git status --porcelain | grep '^A')
+if [ -n "$added_files" ]; then
+    echo "已自动添加以下未跟踪文件："
+    echo "$added_files"
+else
+    echo "无未跟踪文件需要添加"
+fi
+
 # 第三步：自动添加所有变更到暂存区
 echo -e "\n===== 自动添加所有变更到暂存区 ====="
 git add .
