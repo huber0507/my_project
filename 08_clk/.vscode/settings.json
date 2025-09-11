@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "bsp_led.h": "c",
+        "mcimx6y2.h": "c"
+    }
+}
