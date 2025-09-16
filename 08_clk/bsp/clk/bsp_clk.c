@@ -20,7 +20,7 @@ void clk_enable(void)
 void imx6u_clkinit(void)
 {
 	unsigned int reg =0;
-	if((((CCM->CCSR)>>2)&0x1)==0)
+	if((((CCM->CCSR)>>2)&0x1)==0)   /*判断是不是使用的PLL1时钟，0使用的是备用时钟源，1为*/
 	{
 		CCM->CCSR &= ~(1<<8);
 		CCM->CCSR |=(1<<2);
