@@ -4,41 +4,40 @@
 #include "bsp_beep.h"
 #include "bsp_key.h"
 
+/*
+ * @description	: main函数
+ * @param 		: 无
+ * @return 		: 无
+ */
 int main(void)
 {
 	int i = 0;
 	int keyvalue = 0;
-	unsigned char led_state = OFF;
+	unsigned char led_state = OFF;  // LED初始状态：灭
 	unsigned char beep_state = OFF;
+	
+	clk_enable();		/* 使能所有的时钟 			*/
+	led_init();			/* 初始化led 			*/
+	beep_init();		/* 初始化beep	 		*/
+	key_init();			/* 初始化key 			*/
 
-	clk_enable();
-	led_init();
-	beep_init();
-	key_init();
-
-while(1)	
-{
-	keyvalue = key_getvalue();
-	if(keyvalue)
-	{
-		switch (keyvalue)
+	while(1)			
+	{	
+		keyvalue = key_getvalue();  // 获取按键值
+		if(keyvalue)  // 按键按下
 		{
-		case KEY0_VALUE:
-			/* code */
-			beep_state =!beep_state;
-			beep_switch(beep_state);
-			break;
-
+			switch (keyvalue)
+			{
+				case KEY0_VALUE:  // KEY0按下
+					led_state = !led_state;  // 翻转LED状态（灭→亮 或 亮→灭）
+					led_switch(LED0, led_state);  // 应用新状态
+					break;
+			}
 		}
+		// 移除else分支的"led_switch(LED0,0)"，避免松开按键时强制关闭LED
+
+		delay(10);  // 延时消抖
 	}
-	i++;
-	if(i==50)
-	{
-		i = 0;
-		led_state = !led_state;
-		led_switch(LED0,led_state);
-	}
-	delay(10);
-}
-return 0;
+
+	return 0;
 }

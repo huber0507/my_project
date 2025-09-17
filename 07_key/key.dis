@@ -222,7 +222,7 @@ Disassembly of section .text:
 
 87800200 <key_getvalue>:
 87800200:	b538      	push	{r3, r4, r5, lr}
-87800202:	f240 24b8 	movw	r4, #696	; 0x2b8
+87800202:	f240 24a0 	movw	r4, #672	; 0x2a0
 87800206:	f2c8 7480 	movt	r4, #34688	; 0x8780
 8780020a:	7823      	ldrb	r3, [r4, #0]
 8780020c:	2b01      	cmp	r3, #1
@@ -264,41 +264,31 @@ Disassembly of section .text:
 Disassembly of section .text.startup:
 
 87800268 <main>:
-87800268:	b570      	push	{r4, r5, r6, lr}
-8780026a:	2500      	movs	r5, #0
-8780026c:	462e      	mov	r6, r5
-8780026e:	462c      	mov	r4, r5
-87800270:	f7ff fee4 	bl	8780003c <clk_enable>
-87800274:	f7ff fef2 	bl	8780005c <led_init>
-87800278:	f7ff ff40 	bl	878000fc <beep_init>
-8780027c:	f7ff ffa4 	bl	878001c8 <key_init>
-87800280:	e004      	b.n	8780028c <main+0x24>
-87800282:	2c32      	cmp	r4, #50	; 0x32
-87800284:	d010      	beq.n	878002a8 <main+0x40>
-87800286:	200a      	movs	r0, #10
-87800288:	f7ff ff24 	bl	878000d4 <delay>
-8780028c:	3401      	adds	r4, #1
-8780028e:	f7ff ffb7 	bl	87800200 <key_getvalue>
-87800292:	2800      	cmp	r0, #0
-87800294:	d0f5      	beq.n	87800282 <main+0x1a>
-87800296:	2801      	cmp	r0, #1
-87800298:	d1f3      	bne.n	87800282 <main+0x1a>
-8780029a:	f085 0501 	eor.w	r5, r5, #1
-8780029e:	4628      	mov	r0, r5
-878002a0:	f7ff ff48 	bl	87800134 <beep_switch>
-878002a4:	2c32      	cmp	r4, #50	; 0x32
-878002a6:	d1ee      	bne.n	87800286 <main+0x1e>
-878002a8:	f086 0601 	eor.w	r6, r6, #1
-878002ac:	2400      	movs	r4, #0
-878002ae:	4631      	mov	r1, r6
-878002b0:	4620      	mov	r0, r4
-878002b2:	f7ff feef 	bl	87800094 <led_switch>
-878002b6:	e7e6      	b.n	87800286 <main+0x1e>
+87800268:	b510      	push	{r4, lr}
+8780026a:	2400      	movs	r4, #0
+8780026c:	f7ff fee6 	bl	8780003c <clk_enable>
+87800270:	f7ff fef4 	bl	8780005c <led_init>
+87800274:	f7ff ff42 	bl	878000fc <beep_init>
+87800278:	f7ff ffa6 	bl	878001c8 <key_init>
+8780027c:	e002      	b.n	87800284 <main+0x1c>
+8780027e:	200a      	movs	r0, #10
+87800280:	f7ff ff28 	bl	878000d4 <delay>
+87800284:	f7ff ffbc 	bl	87800200 <key_getvalue>
+87800288:	2800      	cmp	r0, #0
+8780028a:	d0f8      	beq.n	8780027e <main+0x16>
+8780028c:	2801      	cmp	r0, #1
+8780028e:	d1f6      	bne.n	8780027e <main+0x16>
+87800290:	f084 0401 	eor.w	r4, r4, #1
+87800294:	2000      	movs	r0, #0
+87800296:	4621      	mov	r1, r4
+87800298:	f7ff fefc 	bl	87800094 <led_switch>
+8780029c:	e7ef      	b.n	8780027e <main+0x16>
+8780029e:	bf00      	nop
 
 Disassembly of section .data:
 
-878002b8 <release.7402>:
-878002b8:	地址 0x00000000878002b8 越界。
+878002a0 <release.7402>:
+878002a0:	地址 0x00000000878002a0 越界。
 
 
 Disassembly of section .comment:
