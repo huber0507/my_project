@@ -123,6 +123,25 @@ IRQ_Handler:
 	mrc p15,4,r1,c15,c0,0		/*将CP15的C0的值到R1寄存器中，
 														* 参考文档 ARM Cortex-A(armV7)编程手册 V4.0.pdf P49
 														*Cortex-A7 Technical ReferenceManua.pdf P68 P138 */
+	add r1,r1,#0X2000			/*GIC地址加0X2000,得到CPU接口端地址 */
+	ldr r0, [r1, #0XC]				/*CPU 接口端基地址加 0X0C 就是 GICC_IAR 寄存器,GICC_IAR 保存着当前发生中断的中断号,我们要根据这个中断号来绝对调用哪个中断服务函数*/
+	push  {r0,r1}				/* 保存r0,r1*/
+	cps #0x13					/*进入SVC模式，允许其他中断再次进入 */
+	push {lr}						/* 保存SVC模式的lr寄存器*/
+	ldr r2, =system_irqhandler /*加载C语言中断处理函数到r2寄存器中 */
+	blx r2								/*运行C语言中断处理函数，带有一个参数。 */
+	pop	{lr}								/*执行完C语言中断服务函数，lr出栈 */
+	cps	#ox12							/*进入IRQ模式 */
+	pop {r0,r1}
+	str r0,[r1,#0x10]				/*中断执行完成，写EOIR */
+	pop {r0	}
+	msr spsr_cxsf, r0 				/* 恢复 spsr */
+	pop {r0-r3, r12} 					/* r0-r3,r12 出栈 */
+	pop {lr} 									/* lr 出栈 */
+	subs pc, lr, #4 						/* 将 lr-4 赋给 pc */
+
+
+
 
 
 	ldr sp,=0X80200000	/* 设置用户模式下的栈首地址为0X80200000,大小为2MB	  	   			*/

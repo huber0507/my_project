@@ -25,7 +25,6 @@ void beep_init(void)
 	GPIO5->DR |= (1 << 1);		
 }
 
-
 void beep_switch(int status)
 {		
         if(status == ON)

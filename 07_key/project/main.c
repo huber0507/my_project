@@ -29,10 +29,10 @@
  */
 int main(void)
 {
-	int i = 0;
+	// int i = 0;
 	int keyvalue = 0;
-	// unsigned char led_state = OFF;  // LED初始状态：灭
-	unsigned char beep_state = OFF;
+	unsigned char led_state = OFF;  // LED初始状态：灭
+	// unsigned char beep_state = OFF;
 	
 	clk_enable();		/* 使能所有的时钟 			*/
 	led_init();			/* 初始化led 			*/
