@@ -66,8 +66,63 @@ ldr sp, =0x80600000				/*IRQ模式栈首地址为0X80600000,大小为2MB */
 /*进入SYS模式 */
 mrs r0,cpsr
 bic r0,r0,#0x1f							/*将r0的低五位清零，也就是cpsr的M0～M4 */
-orr r0,r0,#0x1f						
+orr r0,r0,#0x1f							/*r0或上0x1f，表示使用SYS模式 */
+msr cpsr, r0								/*r0的数据写入到cpsr中 */
+ldr sp, =0x80400000				/*SYS模式栈首地址为0X80400000,大小为2MB */
 
+
+/*进入SVC模式 */
+mrs r0,cpsr
+bic r0,r0,#0x1f							/*将r0的低五位清零，也就是cpsr的M0～M4 */
+orr r0,r0,#0x13							/*r0或上0x13，表示使用SVC模式 */
+msr cpsr,r0									/*将r0的数据写入到cpsr中 */
+ldr sp, =0X80200000				/*SVC模式栈首地址我0X80200000,大小为2MB */
+
+cpsie i    /*打开全局中断 */
+
+
+#if 0
+/*使能IRQ中断 */
+mrs r0, cpsr					/*读取cpsr寄存器值到r0中 */
+bic r0, r0,#0x80			/*将r0寄存器中的bit7清零，也就是cpsr中的I位清零，表示允许IRQ中断 */
+msr cpsr,r0						/*将r0重新写入到cpsr中 */
+
+#endif
+
+b main					/*跳转到mian函数 */
+
+/*未定义中断 */
+Undefined_Handler:
+	ldr r0, =Undefined_Handler
+	bx r0
+	
+/* SVC中断*/
+SVC_Handler:
+	ldr r0, =SVC_Handler
+	bx r0
+
+/*预取终止中断 */
+PrefAbort_Handler:
+ldr r0, =PrefAbort_Handler
+bx r0
+/*数据终止中断 */
+DataAbort_Handler:
+	ldr r0, =DataAbort_Handler
+	bx r0
+
+/*未使用的中断 */
+NotUsed_Handler:
+	ldr r0, =NotUsed_Handler
+	bx r0
+
+IRQ_Handler:
+	push {lr}							/*保存lr地址 */
+	push{r0-r3,r12}			/*保存r0-r3,r12寄存器 */
+	mrs r0,spsr						/*读取spsr寄存器 */
+	push {r0}						/*保存spsr寄存器 */
+	mrc p15,4,r1,c15,c0,0		/*将CP15的C0的值到R1寄存器中，
+														* 参考文档 ARM Cortex-A(armV7)编程手册 V4.0.pdf P49
+														*Cortex-A7 Technical ReferenceManua.pdf P68 P138 */
 
 
 	ldr sp,=0X80200000	/* 设置用户模式下的栈首地址为0X80200000,大小为2MB	  	   			*/
