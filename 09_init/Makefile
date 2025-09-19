@@ -1,5 +1,5 @@
 CROSS_COMPILE 	?= arm-linux-gnueabihf-
-TARGET		  	?= clk
+TARGET		  	?= int
 
 CC 				:= $(CROSS_COMPILE)gcc
 LD				:= $(CROSS_COMPILE)ld
@@ -12,7 +12,8 @@ INCDIRS 		:= imx6ul \
 				   bsp/delay \
 				   bsp/beep\
 				   bsp/gpio\
-				   bsp/key
+				   bsp/key\
+				   bsp/int
 				   
 				   			   
 SRCDIRS			:= project \
@@ -21,7 +22,8 @@ SRCDIRS			:= project \
 				   bsp/delay \
 				   bsp/beep\
 				   bsp/gpio\
-				   bsp/key
+				   bsp/key\
+				   bsp/int
 				   
 				   
 INCLUDE			:= $(patsubst %, -I %, $(INCDIRS))

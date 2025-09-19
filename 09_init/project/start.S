@@ -117,7 +117,7 @@ NotUsed_Handler:
 /* IRQ异常处理函数（处理普通外部中断） */
 IRQ_Handler:
 	push {lr}					/* 保存返回地址（lr）到栈，供后续恢复 */
-	push{r0-r3,r12}			/* 保存通用寄存器（r0-r3、r12）到栈，避免被中断处理修改 */
+	push {r0-r3,r12}			/* 保存通用寄存器（r0-r3、r12）到栈，避免被中断处理修改 */
 	mrs r0,spsr				/* 读取SPSR寄存器（保存中断发生前的CPSR状态）到r0 */
 	push {r0}					/* 保存SPSR到栈 */
 	
