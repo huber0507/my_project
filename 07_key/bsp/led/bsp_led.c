@@ -28,6 +28,9 @@ void led_init(void)
 
 	/* 4、设置GPIO1_IO03输出低电平，打开LED0*/
 	GPIO1->DR &= ~(1 << 3);		
+
+	/*默认关闭LED*/
+	GPIO1->DR |= (1<<3);	/* 关闭LED0 */
 }
 
 
