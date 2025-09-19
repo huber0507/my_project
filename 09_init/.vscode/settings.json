@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "bsp_led.h": "c",
-        "mcimx6y2.h": "c"
+        "mcimx6y2.h": "c",
+        "fsl_common.h": "c",
+        "fsl_iomuxc.h": "c"
     }
 }

@@ -1,28 +1,36 @@
-
-#include "bsp_delay.h"
+#include "bsp_delay.h"  // 引入延时函数头文件，包含函数声明及相关宏定义
 
 /*
- * @description	: 短时间延时函数
- * @param - n	: 要延时循环次数(空操作循环次数，模式延时)
+ * @description	: 短时间延时函数（微秒级或更短）
+ * @param - n	: 空操作循环次数（循环次数越多，延时越长）
  * @return 		: 无
+ * 实现原理：通过执行空循环消耗CPU时间实现延时，循环体为空操作（仅消耗时钟周期）
+ * 关键说明：
+ *   1. volatile关键字：防止编译器优化掉空循环（若不加，编译器可能认为循环无意义而删除，导致延时失效）
+ *   2. 延时精度：取决于CPU主频和单次循环的时钟周期（主频越高，相同n的延时越短）
+ *   3. 用途：适用于极短时间延时（如硬件时序控制中的微秒级等待）
  */
 void delay_short(volatile unsigned int n)
 {
-	while(n--){}
+	while(n--){}  // 空循环，每次循环执行n--，直到n=0退出（共执行n次循环）
 }
 
 /*
- * @description	: 延时函数,在396Mhz的主频下
- * 			  	  延时时间大约为1ms
- * @param - n	: 要延时的ms数
+ * @description	: 毫秒级延时函数
+ * @param - n	: 要延时的毫秒数（n=1 表示延时约1ms）
  * @return 		: 无
+ * 实现原理：通过多次调用短延时函数delay_short，累积实现毫秒级延时
+ * 关键说明：
+ *   1. 延时校准：在I.MX6ULL主频为396MHz时，delay_short(0x7ff)的执行时间约为1ms
+ *      （0x7ff = 2047，即每次调用短延时循环2047次）
+ *   2. 近似延时：该延时为软件估算值，受CPU负载、指令执行效率影响，非精确延时
+ *   3. 适用场景：裸机开发中无需高精度计时的场景（如LED闪烁、按键消抖等）
  */
 void delay(volatile unsigned int n)
 {
-	while(n--)
+	while(n--)  // 循环n次，每次循环实现约1ms延时，总延时约n毫秒
 	{
-		delay_short(0x7ff);
+		delay_short(0x7ff);  // 单次调用实现约1ms延时（396MHz主频下）
 	}
 }
-
-
+    
