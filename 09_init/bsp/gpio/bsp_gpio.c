@@ -10,18 +10,17 @@
  */
 void gpio_init(GPIO_Type *base, int pin, gpio_pin_config_t *config)
 {
-    if(config->direction == kGPIO_DigitalInput)  /* 配置为输入模式 */
+    base->IMR &=~(1U<<pin);
+    if(config->direction == kGPIO_DigitalInput)
     {
-        // GDIR（GPIO Direction Register）：方向寄存器，bit[pin] = 0 表示输入
-        base->GDIR &= ~(1 << pin);  // 清除bit[pin]（置0），设置为输入
+        base->GDIR &=~(1<<pin);
     }
-    else  /* 配置为输出模式 */
+    else
     {
-        // GDIR bit[pin] = 1 表示输出
-        base->GDIR |= 1 << pin;  // 置位bit[pin]（置1），设置为输出
-        // 输出模式下，通过gpio_pinwrite设置默认电平（高/低）
-        gpio_pinwrite(base, pin, config->outputLogic);
+        base->GDIR |=1<<pin;
+        gpio_pinwrite(base,pin,config->outputLogic);
     }
+    gpio_intconfig(base,pin,config->interruputMode);
 }
 
 /*
@@ -58,5 +57,10 @@ void gpio_pinwrite(GPIO_Type *base, int pin, int value)
         // 置位DR寄存器的bit[pin]（置1）
         base->DR |= (1U << pin);
     }    
+}
+
+void gpio_intconfig(GPIO_Type*base,unsigned int pin,gpio_interrupt_mode_t pin_int_mode)
+{
+    volatile u32
 }
     
