@@ -225,7 +225,7 @@ Disassembly of section .text:
 
 87800208 <key_getvalue>:
 87800208:	b538      	push	{r3, r4, r5, lr}
-8780020a:	f240 24a8 	movw	r4, #680	; 0x2a8
+8780020a:	f240 24b4 	movw	r4, #692	; 0x2b4
 8780020e:	f2c8 7480 	movt	r4, #34688	; 0x8780
 87800212:	7823      	ldrb	r3, [r4, #0]
 87800214:	2b01      	cmp	r3, #1
@@ -267,31 +267,35 @@ Disassembly of section .text:
 Disassembly of section .text.startup:
 
 87800270 <main>:
-87800270:	b510      	push	{r4, lr}
+87800270:	b538      	push	{r3, r4, r5, lr}
 87800272:	2400      	movs	r4, #0
-87800274:	f7ff fee2 	bl	8780003c <clk_enable>
-87800278:	f7ff fef0 	bl	8780005c <led_init>
-8780027c:	f7ff ff42 	bl	87800104 <beep_init>
-87800280:	f7ff ffa6 	bl	878001d0 <key_init>
-87800284:	e002      	b.n	8780028c <main+0x1c>
-87800286:	200a      	movs	r0, #10
-87800288:	f7ff ff28 	bl	878000dc <delay>
-8780028c:	f7ff ffbc 	bl	87800208 <key_getvalue>
-87800290:	2800      	cmp	r0, #0
-87800292:	d0f8      	beq.n	87800286 <main+0x16>
-87800294:	2801      	cmp	r0, #1
-87800296:	d1f6      	bne.n	87800286 <main+0x16>
-87800298:	f084 0401 	eor.w	r4, r4, #1
-8780029c:	2000      	movs	r0, #0
-8780029e:	4621      	mov	r1, r4
-878002a0:	f7ff fefc 	bl	8780009c <led_switch>
-878002a4:	e7ef      	b.n	87800286 <main+0x16>
-878002a6:	bf00      	nop
+87800274:	4625      	mov	r5, r4
+87800276:	f7ff fee1 	bl	8780003c <clk_enable>
+8780027a:	f7ff feef 	bl	8780005c <led_init>
+8780027e:	f7ff ff41 	bl	87800104 <beep_init>
+87800282:	f7ff ffa5 	bl	878001d0 <key_init>
+87800286:	e002      	b.n	8780028e <main+0x1e>
+87800288:	200a      	movs	r0, #10
+8780028a:	f7ff ff27 	bl	878000dc <delay>
+8780028e:	f7ff ffbb 	bl	87800208 <key_getvalue>
+87800292:	2800      	cmp	r0, #0
+87800294:	d0f8      	beq.n	87800288 <main+0x18>
+87800296:	2801      	cmp	r0, #1
+87800298:	d1f6      	bne.n	87800288 <main+0x18>
+8780029a:	f085 0501 	eor.w	r5, r5, #1
+8780029e:	f084 0401 	eor.w	r4, r4, #1
+878002a2:	4629      	mov	r1, r5
+878002a4:	2000      	movs	r0, #0
+878002a6:	f7ff fef9 	bl	8780009c <led_switch>
+878002aa:	4620      	mov	r0, r4
+878002ac:	f7ff ff46 	bl	8780013c <beep_switch>
+878002b0:	e7ea      	b.n	87800288 <main+0x18>
+878002b2:	bf00      	nop
 
 Disassembly of section .data:
 
-878002a8 <release.7402>:
-878002a8:	地址 0x00000000878002a8 越界。
+878002b4 <release.7402>:
+878002b4:	地址 0x00000000878002b4 越界。
 
 
 Disassembly of section .comment:

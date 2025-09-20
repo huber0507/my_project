@@ -16,7 +16,7 @@
  * 一旦LED初始化之后可能就会直接打开LED灯了
  * 9/18继续测试
  * 测试还是有问题，重新修改了代码，终于是好了修改记录如下
- * 
+ * 2025/9/19测试OK
  * *
  * *
  * *
@@ -32,7 +32,7 @@ int main(void)
 	// int i = 0;
 	int keyvalue = 0;
 	unsigned char led_state = OFF;  // LED初始状态：灭
-	// unsigned char beep_state = OFF;
+	unsigned char beep_state = OFF;
 	
 	clk_enable();		/* 使能所有的时钟 			*/
 	led_init();			/* 初始化led 			*/
@@ -48,7 +48,9 @@ int main(void)
 			{
 				case KEY0_VALUE:  // KEY0按下
 					led_state = !led_state;  // 翻转LED状态（灭→亮 或 亮→灭）
+					beep_state=!beep_state;
 					led_switch(LED0, led_state);  // 应用新状态
+					beep_switch(beep_state);
 					break;
 			}
 		}
