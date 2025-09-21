@@ -9,20 +9,21 @@ OBJDUMP 		:= $(CROSS_COMPILE)objdump
 INCDIRS 		:= imx6ul \
 				   bsp/clk \
 				   bsp/led \
-				   bsp/delay \
-				   bsp/beep\
-				   bsp/gpio\
-				   bsp/key\
+				   bsp/delay  \
+				   bsp/beep \
+				   bsp/gpio \
+				   bsp/key \
+				   bsp/exit \
 				   bsp/int
-				   
 				   			   
 SRCDIRS			:= project \
 				   bsp/clk \
 				   bsp/led \
 				   bsp/delay \
-				   bsp/beep\
-				   bsp/gpio\
-				   bsp/key\
+				   bsp/beep \
+				   bsp/gpio \
+				   bsp/key \
+				   bsp/exit \
 				   bsp/int
 				   
 				   

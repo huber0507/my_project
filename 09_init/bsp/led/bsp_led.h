@@ -44,4 +44,6 @@ void led_init(void);
  */
 void led_switch(int led, int status);
 
+void led_toggle(int led);
+
 #endif  // 结束头文件卫士，与开头 #ifndef __BSP_LED_H 配对

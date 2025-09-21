@@ -65,4 +65,23 @@ void led_switch(int led, int status)
 			break;  // 跳出switch语句
 	}
 }
-    
+
+void led_toggle(int led)
+{
+    switch(led)
+    {
+        case LED0:
+            // 读取GPIO1_IO03当前电平（bit3的值）
+            // 若当前为高电平（LED灭），则置为低电平（LED亮）
+            // 若当前为低电平（LED亮），则置为高电平（LED灭）
+            if((GPIO1->DR & (1 << 3)) != 0)  // 当前为高电平（LED0灭）
+            {
+                GPIO1->DR &= ~(1 << 3);  // 置为低电平（点亮）
+            }
+            else  // 当前为低电平（LED0亮）
+            {
+                GPIO1->DR |= (1 << 3);   // 置为高电平（熄灭）
+            }
+            break;
+    }
+}
