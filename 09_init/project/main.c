@@ -23,11 +23,14 @@ int main(void)
 	key_init();			/* 初始化key 			*/
 	exit_init();		/* 初始化按键中断			*/
 
+	/*测试日志：2025/09/22     第一次按键按下是没有响应的，需要查明是什么原因导致*/
+
 	while(1)			
 	{	
 		state = !state;
+		
 		led_switch(LED0, state);
-		delay(500);
+		delay(100);
 	}
 
 	return 0;
