@@ -86,7 +86,7 @@ void gpio_intconfig(GPIO_Type*base,unsigned int pin,gpio_interrupt_mode_t pin_in
        *icr = (*icr & (~(3U << (2 * icrShift)))) |(2U << (2 * icrShift));
        break;
     case(kGPIO_IntFallingEdge):
-        *icr |= (3U << (2 * icrShift));
+       *icr = (*icr & ~(3U << (2 * icrShift))) | (3U << (2 * icrShift));
         break;
     case(kGPIO_IntRisingOrFallingEdge):
         base->EDGE_SEL |= (1U << pin);

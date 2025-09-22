@@ -13,7 +13,8 @@
  */
 int main(void)
 {
-	unsigned char state = OFF;
+	    unsigned char led_state = OFF;
+	    unsigned char beep_state = OFF;  // 蜂鸣器状态（独立于LED）
 
 	int_init(); 		/* 初始化中断(一定要最先调用！) */
 	imx6u_clkinit();	/* 初始化系统时钟 			*/
@@ -27,9 +28,18 @@ int main(void)
 
 	while(1)			
 	{	
-		state = !state;
+		if(key_irq_flag==1)
+		{
+			delay(10);
+			if(gpio_pinread(GPIO1,18)==0)
+			{
+				beep_state=!beep_state;
+				beep_switch(beep_state);
+			key_irq_flag=0;
+		}
+		led_state = !led_state;
 		
-		led_switch(LED0, state);
+		led_switch(LED0, led_state);
 		delay(100);
 	}
 
