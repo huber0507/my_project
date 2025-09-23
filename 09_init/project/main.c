@@ -27,7 +27,7 @@ int main(void)
 	{	
 		state = !state;
 		led_switch(LED0, state);
-		delay(500);
+		delay(100);
 	}
 
 	return 0;
