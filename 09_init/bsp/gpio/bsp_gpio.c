@@ -63,6 +63,7 @@ void gpio_pinwrite(GPIO_Type *base, int pin, int value)
  */
 void gpio_intconfig(GPIO_Type* base, unsigned int pin, gpio_interrupt_mode_t pin_int_mode)
 {
+<<<<<<< HEAD
 	volatile uint32_t *icr;
 	uint32_t icrShift;
 
@@ -99,6 +100,41 @@ void gpio_intconfig(GPIO_Type* base, unsigned int pin, gpio_interrupt_mode_t pin
 		default:
 			break;
 	}
+=======
+    volatile u32 *icr;
+    u32 icrShift;
+    icrShift = pin;
+    base->EDGE_SEL &= ~(1U<<pin);
+    if(pin<16)
+    {
+        icr =&(base->ICR1);
+    }
+    else
+    {
+        icr =&(base->ICR2);
+        icrShift -=16;
+     }
+     switch (pin_int_mode)
+     {
+     case (kGPIO_IntLowLevel):
+        *icr = (*icr &(~(3U<<(2*icrShift))))|(2U<<(2*icrShift));
+        break;
+    case(kGPIO_IntHighlevel):
+        *icr = (*icr &(~(3U<<(2*icrShift))))|(1U<<(2*icrShift));
+        break;
+    case(kGPIO_IntRisingEdge):
+       *icr = (*icr & (~(3U << (2 * icrShift)))) |(2U << (2 * icrShift));
+       break;
+    case(kGPIO_IntFallingEdge):
+       *icr = (*icr & ~(3U << (2 * icrShift))) | (3U << (2 * icrShift));
+        break;
+    case(kGPIO_IntRisingOrFallingEdge):
+        base->EDGE_SEL |= (1U << pin);
+        break;
+    default:
+        break;
+     }
+>>>>>>> be4ec5e7b51a0b128ff488f1ffb062b333852600
 }
 
 

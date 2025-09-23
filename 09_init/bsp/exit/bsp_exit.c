@@ -24,6 +24,9 @@ void exit_init(void)
 	key_config.outputLogic = 1;
 	gpio_init(GPIO1, 18, &key_config);
 
+	    /* 关键补充：初始化时清除一次中断标志位，避免复位残留标志 */
+    gpio_clearintflags(GPIO1, 18);
+
 	GIC_EnableIRQ(GPIO1_Combined_16_31_IRQn);				/* 使能GIC中对应的中断 */
 	system_register_irqhandler(GPIO1_Combined_16_31_IRQn, (system_irq_handler_t)gpio1_io18_irqhandler, NULL);	/* 注册中断服务函数 */
 	gpio_enableint(GPIO1, 18);								/* 使能GPIO1_IO18的中断功能 */
@@ -36,22 +39,12 @@ void exit_init(void)
  */
 void gpio1_io18_irqhandler(void)
 { 
-	static unsigned char state = 0;
 
-	/*
-	 *采用延时消抖，中断服务函数中禁止使用延时函数！因为中断服务需要
-	 *快进快出！！这里为了演示所以采用了延时函数进行消抖，后面我们会讲解
-	 *定时器中断消抖法！！！
- 	 */
+	    // 1. 先清除中断标志位（避免重复触发）
 
-	delay(10);
-	if(gpio_pinread(GPIO1, 18) == 0)	/* 按键按下了  */
-	{
-		state = !state;
-		beep_switch(state);
-	}
-	
 	gpio_clearintflags(GPIO1, 18); /* 清除中断标志位 */
+	    // 2. 置位中断标志（通知主循环：有按键事件）
+    key_irq_flag = 1;  
 }
 
 
