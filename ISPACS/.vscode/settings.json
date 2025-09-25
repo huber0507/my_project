@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "bsp_key.h": "c"
+        "bsp_key.h": "c",
+        "imx6ul.h": "c"
     }
 }
