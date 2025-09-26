@@ -1,4 +1,5 @@
 #include "bsp_beep.h"
+#include "bsp_delay.h"
 
 
 /*
@@ -43,3 +44,33 @@ void beep_switch(int status)
 	else if(status == OFF)
 		GPIO5->DR |= (1 << 1);	/* 关闭蜂鸣器 */
 }
+
+/*
+ * @description		: 蜂鸣器响玲次数
+ * @param - n	: 响玲n次
+ * @return 			: 无
+ */
+void beep_toggle(int n)
+{	
+	if(n>0)									/*如果n大于0,则进入循环，响玲N次*/
+	{
+		for(int i=0;i<n;i++)
+		beep_switch(ON);	/*打开蜂鸣器*/
+		delayms(500);			/*延时0.5秒*/
+		beep_switch(OFF);	/*关闭蜂鸣器*/
+		delayms(500);				/*延时0.5秒*/
+
+	}
+	else											
+	{
+		beep_switch(OFF);			/*关闭蜂鸣器*/
+	}
+	
+}
+
+/*
+ * @description		: 蜂鸣器常响
+ * @param 			: 无
+ * @return 			: 无
+ */
+buzzer_long_on()

@@ -136,3 +136,5 @@ void gpio_clearintflags(GPIO_Type* base, unsigned int pin)
 }
 
 
+/*按键状态检测  区分长按与短按*/
+key_state_scan()

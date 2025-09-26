@@ -7,5 +7,8 @@
 /* 函数声明 */
 void beep_init(void);
 void beep_switch(int status);
+
+void beep_toggle(int n);
+
 #endif
 
