@@ -4,16 +4,16 @@
 
 
 /*
- * @description	: 初始化按键
+ * @description	: 门状态初始化
  * @param 		: 无
  * @return 		: 无
  */
 void door_init(void)
 {	
-	gpio_pin_config_t key_config;
+	gpio_pin_config_t door_config;
 	
-	/* 1、初始化IO复用, 复用为GPIO1_IO18 */
-	IOMUXC_SetPinMux(IOMUXC_UART1_CTS_B_GPIO1_IO18,0);
+	/* 1、初始化IO复用, 复用为GPIO1_IO4*/
+	IOMUXC_SetPinMux(IOMUXC_GPIO1_IO04_GPIO1_IO04,0);
 
 	/* 2、、配置UART1_CTS_B的IO属性	
 	 *bit 16:0 HYS关闭
@@ -25,37 +25,30 @@ void door_init(void)
 	 *bit [5:3]: 000 关闭输出
 	 *bit [0]: 0 低转换率
 	 */
-	IOMUXC_SetPinConfig(IOMUXC_UART1_CTS_B_GPIO1_IO18,0xF080);
+	IOMUXC_SetPinConfig(IOMUXC_GPIO1_IO04_GPIO1_IO04,0xF080);
 	
 	/* 3、初始化GPIO */
-	//GPIO1->GDIR &= ~(1 << 18);	/* GPIO1_IO18设置为输入 */	
-	key_config.direction = kGPIO_DigitalInput;
-	gpio_init(GPIO1,18, &key_config);
+	//GPIO1->GDIR &= ~(1 << 4);	/* GPIO1_IO4设置为输入 */	
+	door_config.direction = kGPIO_DigitalInput;
+	gpio_init(GPIO1,4, &door_config);
 	
 }
 
 /*
- * @description	: 获取按键值 
+ * @description	: 获取当前门状态
  * @param 		: 无
- * @return 		: 0 没有按键按下，其他值:对应的按键值
+ * @return 		: door_open（0）=门打开；door_closed（1）=门关闭
+ * 				  （硬件逻辑：门打开时传感器输出高电平1，关闭时输出低电平0）
  */
-int key_getvalue(void)
+enum doorvalue door_get_state(void)
 {
-	int ret = 0;
-	static unsigned char release = 1; /* 按键松开 */ 
-
-	if((release==1)&&(gpio_pinread(GPIO1, 18) == 0)) 		/* KEY0 	*/
-	{	
-		delay(10);		/* 延时消抖 		*/
-		release = 0;	/* 标记按键按下 */
-		if(gpio_pinread(GPIO1, 18) == 0)
-			ret = KEY0_VALUE;
-	}
-	else if(gpio_pinread(GPIO1, 18) == 1)
-	{
-		ret = 0;
-		release = 1; 	/* 标记按键释放 */
-	}
-
-	return ret;	
+    uint32_t gpio_level = gpio_pinread(GPIO1, 4);  // 读取GPIO1_IO04电平
+    
+    // 电平与状态对应：GPIO=1→门打开（返回0）；GPIO=0→门关闭（返回1）
+    // （若硬件相反，将"==1"改为"==0"即可）
+    if (gpio_level == 1) {
+        return door_open;    // 门打开
+    } else {
+        return door_closed;  // 门关闭
+    }
 }
