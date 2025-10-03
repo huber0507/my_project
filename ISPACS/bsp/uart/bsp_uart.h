@@ -3,6 +3,8 @@
 #include "imx6ul.h"
 
 
+
+
 /* 函数声明 */
 void uart_init(void);
 void uart_io_init(void);
@@ -14,6 +16,8 @@ void putc(unsigned char c);
 void puts(char *str);
 unsigned char getc(void);
 void raise(int sig_nr);
+
+
 
 
 #endif

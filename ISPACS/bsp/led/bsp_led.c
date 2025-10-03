@@ -27,8 +27,9 @@ void led_init(void)
 	/* 3、初始化GPIO,GPIO1_IO03设置为输出*/
 	GPIO1->GDIR |= (1 << 3);	 
 
-	/* 4、设置GPIO1_IO03输出低电平，打开LED0*/
-	GPIO1->DR &= ~(1 << 3);		
+/* 4、初始化状态：关闭LED0（输出高电平）*/
+GPIO1->DR |= (1 << 3);		// 仅保留这一行，直接将LED初始化为灭
+
 }
 
 
@@ -39,14 +40,14 @@ void led_init(void)
  * @return 			: 无
  */
 void led_switch(int led, int status)
-{	
-	switch(led)
-	{
-		case LED0:
-			if(status == ON)
-				GPIO1->DR &= ~(1<<3);	/* 打开LED0 */
-			else if(status == OFF)
-				GPIO1->DR |= (1<<3);	/* 关闭LED0 */
-			break;
-	}
+{
+    if (led == LED0) {
+        if (status == ON) {
+            // 点亮LED：低电平（假设硬件是低电平点亮）
+            LED0_GPIO->DR &= ~(1 << LED0_PIN);  
+        } else if (status == OFF) {
+            // 熄灭LED：高电平
+            LED0_GPIO->DR |= (1 << LED0_PIN);   
+        }
+    }
 }

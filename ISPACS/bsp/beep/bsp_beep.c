@@ -2,6 +2,7 @@
 #include "bsp_delay.h"
 
 
+
 /*
  * @description	: 初始化蜂鸣器对应的IO
  * @param 		: 无
@@ -50,22 +51,16 @@ void beep_switch(int status)
  * @param - n	: 响玲n次
  * @return 			: 无
  */
-void beep_toggle(int n)
-{	
-	if(n>0)									/*如果n大于0,则进入循环，响玲N次*/
-	{
-		for(int i=0;i<n;i++)
-		beep_switch(ON);	/*打开蜂鸣器*/
-		delayms(500);			/*延时0.5秒*/
-		beep_switch(OFF);	/*关闭蜂鸣器*/
-		delayms(500);				/*延时0.5秒*/
-
-	}
-	else											
-	{
-		beep_switch(OFF);			/*关闭蜂鸣器*/
-	}
-	
+void beep_toggle(uint8_t n)
+{
+    int i;  // 变量 i 移到循环外声明（C89 标准要求）
+    for(i=0; i<n; i++)  // 循环内仅使用变量 i
+    {
+        beep_switch(ON);   // 蜂鸣器响
+        delayms(500);     // 响 500ms
+        beep_switch(OFF);  // 蜂鸣器停
+        delayms(500);     // 停 500ms（完成一次短鸣）
+    }
 }
 
 /*
@@ -73,4 +68,7 @@ void beep_toggle(int n)
  * @param 			: 无
  * @return 			: 无
  */
-buzzer_long_on()
+void beep_long_on(void)
+{
+	beep_switch(ON);
+}

@@ -8,7 +8,9 @@
 void beep_init(void);
 void beep_switch(int status);
 
-void beep_toggle(int n);
+void beep_toggle(uint8_t n);
+
+void beep_long_on(void);
 
 #endif
 
