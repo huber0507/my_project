@@ -34,11 +34,17 @@ int main(void)
     // 解决delay_ms隐式声明：已包含bsp_delay.h
     delayms(1000);       // 等待自检完成
 
-    // 主函数初始化后添加，测试LED是否能被强制控制
-led_switch(LED0, ON);  // 亮3秒
-delayms(5000);
-led_switch(LED0, OFF); // 灭3秒
-delayms(5000);
+//     // 主函数初始化后添加，测试LED是否能被强制控制
+// led_switch(LED0, ON);  // 亮3秒
+// delayms(5000);
+// led_switch(LED0, OFF); // 灭3秒
+// delayms(5000);
+
+//采用SG90作为实际门的开合机械装置，增加角度反馈读取，获取门状态信息。
+//增加串口打印信息，判断各个参数状态
+//后续延伸会增加屏幕控制
+//直接采用屏幕打印串口信息。
+
 
     /************************** 3. 主循环变量初始化（修改静态变量赋值方式） **************************/
     // 错误写法：static enum doorvalue last_door_state = door_get_state();（初始化用了函数调用）
