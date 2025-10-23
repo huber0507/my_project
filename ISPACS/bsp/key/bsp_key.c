@@ -3,6 +3,7 @@
 #include "bsp_delay.h"
 #include "bsp_beep.h"  // 新增：包含蜂鸣器头文件，解决 beep_beep 未声明问题
 #include "bsp_door.h"
+#include "bsp_sg90.h"
 
 
 
@@ -108,7 +109,7 @@ void key_process(void)
                 if (current_time - first_press_time <= 3000)  // 3秒内双击
                 {
                     printf("双击有效：开门\n");
-                    open_door();  // 执行开门
+                      SG90_DoorOpen();  // 执行开门
                     // 重置状态变量
                     key_count = 0;
                     long_press_flag = 0;
@@ -129,7 +130,7 @@ void key_process(void)
                 if (press_duration >= 5000)  // 长按5秒以上
                 {
                     printf("长按有效（%dms）：开门\n", press_duration);
-                    open_door();  // 执行开门
+                    SG90_DoorOpen();   // 执行开门
                     key_count = 0;
                     long_press_flag = 0;
                 }

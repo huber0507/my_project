@@ -31,7 +31,8 @@ INCDIRS 		:= imx6ul \
 				   bsp/touchscreen \
 				   bsp/backlight \
 				   bsp/adc \
-				   bsp/door
+				   bsp/door\
+				   bsp/SG90
 				   			   
 SRCDIRS			:= project \
 				   stdio/lib \
@@ -55,7 +56,9 @@ SRCDIRS			:= project \
 				   bsp/touchscreen \
 				   bsp/backlight \
 				   bsp/adc \
-				   bsp/door
+				   bsp/door\
+				   bsp/SG90
+
 				   
 				   
 INCLUDE			:= $(patsubst %, -I %, $(INCDIRS))

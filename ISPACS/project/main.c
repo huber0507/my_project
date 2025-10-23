@@ -8,6 +8,7 @@
 #include "bsp_delay.h"      // 延时函数（含delay_ms声明）
 #include "bsp_uart.h"       // 串口打印（若printf是串口实现，需包含此头文件）
 #include <stdio.h>          // 若printf是标准库实现，需包含此头文件（二选一）
+#include "bsp_sg90.h"
 
 int main(void)
 {
@@ -20,6 +21,9 @@ int main(void)
     door_init();                 // 门状态检测初始化（使能door_get_state）
     key_init();                  // 按键初始化
     epit1_init(65, 1000);        // 1ms定时器初始化
+    SG90_Init();   
+    SG90_Init2();
+
 
     /************************** 2. 系统启动提示 **************************/
     // 解决printf隐式声明：已包含bsp_uart.h或stdio.h
@@ -67,12 +71,12 @@ int main(void)
         {
             if (current_door_state == door_open)
             {
-                open_door();
+               SG90_DoorOpen();
                 printf("状态变化：门已打开\n");
             }
             else
             {
-                close_door();
+                SG90_DoorClose();
                 printf("状态变化：门已关闭\n");
             }
             last_door_state = current_door_state;  // 更新上一次状态

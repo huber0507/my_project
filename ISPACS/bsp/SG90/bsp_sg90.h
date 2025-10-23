@@ -1,44 +1,84 @@
 #ifndef __BSP_SG90_H
 #define __BSP_SG90_H
 
-#include "imx6ul.h"  // 替换STM32头文件为IMX6ULL头文件
-#include "bsp_delay.h"  // 需确保IMX6ULL有对应的延时函数
+#include "imx6ul.h"
 
-// -------------------------- 硬件配置（IMX6ULL，GPIO1_IO08和GPIO1_IO09） --------------------------
-// PWM1（GPIO1_IO08）配置（控制第一个舵机）
-#define SG90_PWM1_TIMx          PWM1
-#define SG90_PWM1_CLK           CCM_CCGR6_PWM1_MASK  // PWM1时钟掩码
-#define SG90_PWM1_GPIO_PORT     GPIO1
-#define SG90_PWM1_GPIO_CLK      CCM_CCGR1_GPIO1_MASK // GPIO1时钟掩码
-#define SG90_PWM1_PIN           GPIO_PIN_8           // GPIO1_IO08
-#define SG90_PWM1_MUX           IOMUXC_GPIO1_IO08_PWM1_OUT  // 复用功能
+// -------------------------- 基地址定义（条件编译避免重定义） --------------------------
+#ifndef PWM1_BASE
+#define PWM1_BASE                 0x02080000  // PWM1基地址
+#endif
 
-// PWM2（GPIO1_IO09）配置（控制第二个舵机，可选）
-#define SG90_PWM2_TIMx          PWM2
-#define SG90_PWM2_CLK           CCM_CCGR6_PWM2_MASK  // PWM2时钟掩码
-#define SG90_PWM2_GPIO_PORT     GPIO1
-#define SG90_PWM2_GPIO_CLK      CCM_CCGR1_GPIO1_MASK
-#define SG90_PWM2_PIN           GPIO_PIN_9           // GPIO1_IO09
-#define SG90_PWM2_MUX           IOMUXC_GPIO1_IO09_PWM2_OUT  // 复用功能
+#ifndef PWM2_BASE
+#define PWM2_BASE                 0x02080400  // PWM2基地址
+#endif
 
-// 角度反馈ADC配置（需硬件改造，示例：ADC1_CH0，根据实际引脚修改）
-#define SG90_ADCx               ADC1
-#define SG90_ADC_CLK            CCM_CCGR5_ADC_MASK   // ADC时钟掩码
-#define SG90_ADC_CHANNEL        0                    // ADC通道号
-#define SG90_ADC_GPIO_PORT      GPIO1
-#define SG90_ADC_GPIO_CLK       CCM_CCGR1_GPIO1_MASK
-#define SG90_ADC_PIN            GPIO_PIN_0           // 示例：GPIO1_IO00作为ADC输入
-#define SG90_ADC_MUX            IOMUXC_GPIO1_IO00_ADC1_CH0  // ADC复用功能
-// --------------------------------------------------------------------------------
+#ifndef ADC1_BASE
+#define ADC1_BASE                 0x02198000  // ADC1基地址
+#endif
+
+#ifndef CCM_BASE
+#define CCM_BASE                  0x020C4000  // CCM基地址
+#endif
+
+#ifndef IOMUXC_BASE
+#define IOMUXC_BASE               0x020E0000  // IOMUXC基地址
+#endif
+
+// -------------------------- 其他宏定义（保持不变） --------------------------
+// CCM时钟掩码
+#define CCM_CCGR1_GPIO1_MASK      (3 << 2)    // GPIO1时钟（bit2-3）
+#define CCM_CCGR6_PWM1_MASK       (3 << 0)    // PWM1时钟（bit0-1）
+#define CCM_CCGR6_PWM2_MASK       (3 << 2)    // PWM2时钟（bit2-3）
+#define CCM_CCGR5_ADC_MASK        (3 << 12)   // ADC1时钟（bit12-13）
+
+// GPIO复用/配置地址
+#define GPIO1_IO08_MUX_ADDR       (IOMUXC_BASE + 0x0024)
+#define GPIO1_IO08_CONFIG_ADDR    (IOMUXC_BASE + 0x026C)
+#define GPIO1_IO09_MUX_ADDR       (IOMUXC_BASE + 0x0028)
+#define GPIO1_IO09_CONFIG_ADDR    (IOMUXC_BASE + 0x0270)
+#define GPIO1_IO00_MUX_ADDR       (IOMUXC_BASE + 0x0014)
+#define GPIO1_IO00_CONFIG_ADDR    (IOMUXC_BASE + 0x0254)
+
+// 复用模式
+#define MUX_MODE_PWM              2           // PWM模式
+#define MUX_MODE_ADC              1           // ADC模式
+
+// PWM寄存器偏移
+#define PWM_CR_OFFSET             0x00
+#define PWM_PR_OFFSET             0x04
+#define PWM_PER_OFFSET            0x08
+#define PWM_DTY_OFFSET            0x0C
+
+// PWM控制位
+#define PWM_CR_EN_BIT             (1 << 0)
+#define PWM_CR_SWR_BIT            (1 << 1)
+#define PWM_CR_CLKSRC_IPG         (1 << 2)
+#define PWM_CR_OUTEN_BIT          (1 << 3)
+
+// ADC寄存器偏移
+#define ADC_GC_OFFSET             0x00
+#define ADC_CFG_OFFSET            0x04
+#define ADC_CH_OFFSET             0x08
+#define ADC_STAT_OFFSET           0x0C
+#define ADC_RSLT_OFFSET           0x10
+
+// ADC控制位
+#define ADC_GC_ADEN_BIT           (1 << 0)
+#define ADC_GC_CAL_BIT            (1 << 1)
+#define ADC_GC_SWTRG_BIT          (1 << 2)
+#define ADC_STAT_EOC_BIT          (1 << 0)
+#define ADC_CFG_CLK_DIV4          (1 << 1)
+
+// 引脚配置值
+#define PIN_CONFIG_VAL            0x10B0
 
 // 函数声明
-void SG90_Init(void);                                  // 初始化舵机（默认初始化PWM1）
-void SG90_Init2(void);                                 // 初始化第二个舵机（PWM2）
-void SG90_SetAngle(PWM_Type *pwmx, uint8_t angle);     // 设置指定舵机角度（0~180°）
-uint8_t SG90_GetCurrentAngle(void);                    // 读取当前角度（需硬件改造）
-void SG90_DoorOpen(void);                              // 控制门打开（PWM1，90°）
-void SG90_DoorClose(void);                             // 控制门关闭（PWM1，0°）
-void SG90_DoorOpen2(void);                             // 控制第二个门打开（PWM2，90°）
-void SG90_DoorClose2(void);                            // 控制第二个门关闭（PWM2，0°）
+void SG90_Init(void);
+void SG90_Init2(void);
+void SG90_SetAngle(uint32_t pwm_base, uint8_t angle);
+uint8_t SG90_GetCurrentAngle(void);
+void SG90_DoorOpen(void);
+void SG90_DoorClose(void);
+void delay_ms(uint32_t ms);
 
 #endif
