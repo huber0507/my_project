@@ -25,7 +25,7 @@ static void SG90_PWM_Config(uint32_t pwm_base, uint32_t pwm_clk_mask,
     *CCM_CCGR6 |= pwm_clk_mask;
     
     // 核心修改：改为3个参数（匹配函数声明）
-    IOMUXC_SetPinMux(mux_addr, mux_mode, 0);  // 3参数：muxRegister, muxMode, inputRegister
+    IOMUXC_SetPinMux(mux_addr, mux_mode, 0,0);  // 3参数：muxRegister, muxMode, inputRegister
     
     // IOMUXC_SetPinConfig保持6参数（标准格式，若报错再调整）
     IOMUXC_SetPinConfig(mux_addr, mux_mode, 0, 0, config_addr, PIN_CONFIG_VAL);
@@ -67,7 +67,7 @@ static void SG90_Angle_ADC_Config(void)
     *CCM_CCGR1 |= CCM_CCGR1_GPIO1_MASK;
     
     // 核心修改：改为3个参数
-    IOMUXC_SetPinMux(GPIO1_IO00_MUX_ADDR, MUX_MODE_ADC, 0);
+    IOMUXC_SetPinMux(GPIO1_IO00_MUX_ADDR, MUX_MODE_ADC, 0,0);
     
     IOMUXC_SetPinConfig(GPIO1_IO00_MUX_ADDR, MUX_MODE_ADC, 0, 0,
                       GPIO1_IO00_CONFIG_ADDR, PIN_CONFIG_VAL);
