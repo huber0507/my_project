@@ -136,3 +136,11 @@ void gpio_clearintflags(GPIO_Type* base, unsigned int pin)
 }
 
 
+void gpio_print_level(GPIO_Type *group, uint32_t pin)
+{
+    uint32_t level = (group->DR & (1 << pin)) ? 1 : 0;
+    printf("GPIO%ld_IO%02d 电平：%d\n", 
+           (uint32_t)(group - GPIO1) + 1,  // 计算GPIO组号（GPIO1→1，GPIO2→2...）
+           pin, 
+           level);
+}

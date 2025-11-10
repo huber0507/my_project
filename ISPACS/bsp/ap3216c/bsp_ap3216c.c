@@ -37,7 +37,7 @@ unsigned char ap3216c_init(void)
 
 	/* 2、初始化AP3216C */
 	ap3216c_writeonebyte(AP3216C_ADDR, AP3216C_SYSTEMCONG, 0X04);	/* 复位AP3216C 			*/
-	delayms(50);													/* AP33216C复位至少10ms */
+	delay_ms(50);													/* AP33216C复位至少10ms */
 	ap3216c_writeonebyte(AP3216C_ADDR, AP3216C_SYSTEMCONG, 0X03);	/* 开启ALS、PS+IR 		   	*/
 	data = ap3216c_readonebyte(AP3216C_ADDR, AP3216C_SYSTEMCONG);	/* 读取刚刚写进去的0X03 */
 	if(data == 0X03)

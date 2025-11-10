@@ -59,9 +59,9 @@ unsigned char icm20608_init(void)
 	spi_init(ECSPI3);	
 
 	icm20608_write_reg(ICM20_PWR_MGMT_1, 0x80);		/* 复位，复位后为0x40,睡眠模式 			*/
-	delayms(50);
+	delay_ms(50);
 	icm20608_write_reg(ICM20_PWR_MGMT_1, 0x01);		/* 关闭睡眠，自动选择时钟 					*/
-	delayms(50);
+	delay_ms(50);
 
 	regvalue = icm20608_read_reg(ICM20_WHO_AM_I);
 	printf("icm20608 id = %#X\r\n", regvalue);

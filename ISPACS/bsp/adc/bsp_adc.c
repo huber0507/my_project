@@ -110,7 +110,7 @@ unsigned short getadc_average(unsigned char times)
 	unsigned char t;
 	for(t = 0; t < times; t++){
 		temp_val += getadc_value();
-		delayms(5);
+		delay_ms(5);
 	}
 	return temp_val / times;
 } 

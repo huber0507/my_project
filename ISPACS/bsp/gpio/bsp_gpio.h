@@ -46,4 +46,5 @@ void gpio_enableint(GPIO_Type* base, unsigned int pin);
 void gpio_disableint(GPIO_Type* base, unsigned int pin);
 void gpio_clearintflags(GPIO_Type* base, unsigned int pin);
 
+void gpio_print_level(GPIO_Type *group, uint32_t pin);
 #endif

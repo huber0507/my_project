@@ -1,4 +1,5 @@
 #include "bsp_sg90.h"
+#include "bsp_delay.h"
 #include <stdio.h>
 
 // 私有函数声明
@@ -205,9 +206,3 @@ static void SG90_Angle_ADC_Config(void)
 }
 
 // -------------------------- 延时函数实现（若bsp_delay.h未提供） --------------------------
-void delay_ms(uint32_t ms)
-{
-    uint32_t i, j;
-    for (i = 0; i < ms; i++)
-        for (j = 0; j < 72000; j++);  // 适配72MHz系统时钟，约1ms延时
-}

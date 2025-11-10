@@ -21,7 +21,7 @@ void lcd_init(void)
 
 	lcdgpio_init();			/* 初始化IO 			*/
 	lcd_reset();			/* 复位LCD  			*/
-	delayms(10);			/* 延时10ms 			*/
+	delay_ms(10);			/* 延时10ms 			*/
 	lcd_noreset();			/* 结束复位 			*/
 
 
@@ -181,7 +181,7 @@ void lcd_init(void)
 
 
 	lcd_enable();			/* 使能LCD 	*/
-	delayms(10);
+	delay_ms(10);
 	lcd_clear(LCD_WHITE);	/* 清屏 		*/
 	
 }

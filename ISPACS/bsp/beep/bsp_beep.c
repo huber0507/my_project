@@ -57,9 +57,9 @@ void beep_toggle(uint8_t n)
     for(i=0; i<n; i++)  // 循环内仅使用变量 i
     {
         beep_switch(ON);   // 蜂鸣器响
-        delayms(500);     // 响 500ms
+        delay_ms(500);     // 响 500ms
         beep_switch(OFF);  // 蜂鸣器停
-        delayms(500);     // 停 500ms（完成一次短鸣）
+        delay_ms(500);     // 停 500ms（完成一次短鸣）
     }
 }
 

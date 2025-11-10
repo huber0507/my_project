@@ -3,6 +3,8 @@
 #include "bsp_delay.h"
 #include "bsp_led.h"
 #include "bsp_beep.h"
+#include <stdio.h>
+#include "bsp_gpio.h"
 
 /* 1. 全局变量定义（与头文件声明对应） */
 uint32_t door_open_time = 0;                  // 门打开时长（ms，用uint32_t更合理）
@@ -42,6 +44,7 @@ enum doorvalue door_get_state(void)
 {
     // 读取GPIO4的电平（假设门状态检测引脚为GPIO1_IO4）
     uint32_t gpio_level = (GPIO1->DR & (1 << 4)) ? 1 : 0;  // 1=高电平，0=低电平
+    gpio_print_level(GPIO1, 4);
 
     // 核心：GPIO4电平直接控制LED0（强关联）
     if (gpio_level == 0) {  

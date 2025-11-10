@@ -68,9 +68,9 @@ void touchscreen_init(void)
 
 	/* 4、初始化FT5426 */
 	gpio_pinwrite(GPIO5, 9, 0);	/* 复位FT5426 */
-	delayms(20);
+	delay_ms(20);
 	gpio_pinwrite(GPIO5, 9, 1); /* 停止复位FT5426 */
-	delayms(20);
+	delay_ms(20);
 
 	ft5426_write_byte(FT5426_ADDR, FT5426_DEVICE_MODE, 0); 	/* 进入正常模式 				*/
 	ft5426_write_byte(FT5426_ADDR, FT5426_IDG_MODE, 1); 	/* FT5426中断模式 			*/

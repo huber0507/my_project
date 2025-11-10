@@ -65,6 +65,6 @@ void SG90_SetAngle(uint32_t pwm_base, uint8_t angle);
 uint8_t SG90_GetCurrentAngle(void);
 void SG90_DoorOpen(void);
 void SG90_DoorClose(void);
-void delay_ms(uint32_t ms);
+
 
 #endif

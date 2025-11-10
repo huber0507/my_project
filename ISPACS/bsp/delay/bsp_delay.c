@@ -100,7 +100,7 @@ void gpt1_irqhandler(void)
  * @param - value	: 需要延时的us数,最大延时0XFFFFFFFFus
  * @return 			: 无
  */
-void delayus(unsigned    int usdelay)
+void delay_us(unsigned    int usdelay)
 {
 	unsigned long oldcnt,newcnt;
 	unsigned long tcntvalue = 0;	/* 走过的总时间  */
@@ -127,12 +127,12 @@ void delayus(unsigned    int usdelay)
  * @param - msdelay	: 需要延时的ms数
  * @return 			: 无
  */
-void delayms(unsigned	 int msdelay)
+void delay_ms(unsigned	 int msdelay)
 {
 	int i = 0;
 	for(i=0; i<msdelay; i++)
 	{
-		delayus(1000);
+		delay_us(1000);
 	}
 }
 
